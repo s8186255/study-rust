@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RUST语法基础</title>
+  <style>
+:root {
+  /* 字体：正文宋体系 serif，标题黑体系（政府公文规范，与 Readmdvue 一致） */
+  --gov-font-body: 'Noto Serif CJK SC', 'Source Han Serif SC', 'Source Han Serif CN',
+    '仿宋', 'FangSong', '仿宋_GB2312', 'FangSong_GB2312',
+    '宋体', 'SimSun', 'STSong', 'Times New Roman', serif;
+  --gov-font-heading: 'Noto Sans CJK SC', 'Source Han Sans SC', 'Source Han Sans CN',
+    '黑体', 'SimHei', 'PingFang SC', 'Microsoft YaHei', 'Microsoft YaHei UI', sans-serif;
+  --gov-font-mono: 'SF Mono', 'Cascadia Code', Consolas, 'Courier New', monospace;
+
+  /* 布局 */
+  --gov-max-width: 1000px;
+  --gov-font-size: 16px;
+  --gov-line-height: 1.8;
+
+  /* 颜色：黑白严谨，无强调色 */
+  --gov-color-text: #1a1a1a;
+  --gov-color-heading: #000000;
+  --gov-color-secondary: #4a4a4a;
+  --gov-color-border: #8a8a8a;
+  --gov-color-border-light: #d0d0d0;
+  --gov-color-table-header-bg: #eaeaea;
+  --gov-color-code-bg: #f5f5f5;
+  --gov-color-quote-bg: #f7f7f7;
+  --gov-color-link: #0563c1;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--gov-font-body);
+  font-size: var(--gov-font-size);
+  line-height: var(--gov-line-height);
+  color: var(--gov-color-text);
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.gov-container {
+  max-width: var(--gov-max-width);
+  margin: 0 auto;
+  padding: 48px 56px 80px;
+}
+
+/* ===== 标题：黑体、黑色、无阴影无动画（公文规范） ===== */
+.gov-container h1,
+.gov-container h2,
+.gov-container h3,
+.gov-container h4,
+.gov-container h5,
+.gov-container h6 {
+  font-family: var(--gov-font-heading);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--gov-color-heading);
+  margin: 1.6em 0 0.6em;
+  scroll-margin-top: 20px;
+}
+
+.gov-container h1 {
+  font-size: var(--gov-heading1-size, 1.5em);
+  border-bottom: 1px solid #333333;
+  padding-bottom: 0.3em;
+}
+
+.gov-container h2 {
+  font-size: var(--gov-heading2-size, 1.25em);
+  border-left: 4px solid #333333;
+  padding-left: 0.5em;
+}
+
+.gov-container h3 { font-size: var(--gov-heading3-size, 1.1em); }
+.gov-container h4 { font-size: var(--gov-heading4-size, 1em); }
+.gov-container h5 { font-size: var(--gov-heading5-size, 0.95em); }
+.gov-container h6 { font-size: var(--gov-heading6-size, 0.9em); }
+
+/* ===== 正文段落：首行缩进 2 字符、两端对齐（公文规范） ===== */
+.gov-container p {
+  margin: 0 0 0.75em;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  text-indent: 2em;
+}
+
+/* 列表/引用/表格/目录/代码块内段落不缩进 */
+.gov-container li p,
+.gov-container blockquote p,
+.gov-container td p,
+.gov-container .gov-toc p {
+  text-indent: 0;
+}
+
+/* ===== 列表 ===== */
+.gov-container ul,
+.gov-container ol {
+  margin: 0.5em 0 1em;
+  padding-left: 2em;
+}
+
+.gov-container li {
+  margin: 0.25em 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+/* ===== 表格：严谨全边框、表头浅灰居中、无斑马纹 ===== */
+.gov-container table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 100%;
+  table-layout: auto;
+  margin: 1em 0;
+  font-size: 0.95em;
+}
+
+.gov-container th,
+.gov-container td {
+  border: 1px solid var(--gov-color-border);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.gov-container th {
+  background: var(--gov-color-table-header-bg);
+  font-weight: 700;
+  text-align: center;
+  color: var(--gov-color-table-header-text, var(--gov-color-heading));
+}
+
+.gov-container tbody tr:nth-child(even) {
+  background: transparent;
+}
+
+.gov-container tbody tr:hover {
+  background: transparent;
+}
+
+/* ===== Mermaid 图表容器：居中、防溢出、黑白严谨 ===== */
+.gov-container .gov-mermaid {
+  margin: 1em 0;
+  text-align: center;
+  overflow-x: auto;
+}
+
+.gov-container .gov-mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.gov-container .gov-mermaid-error {
+  border: 1px solid #d33;
+  background: #fdf2f2;
+  color: #a00;
+  padding: 8px 12px;
+  font-size: 0.9em;
+  margin: 1em 0;
+  text-align: left;
+}
+
+/* ===== 图片点击放大（与 Readmdvue 一致：双击图片 → 全屏模态框） ===== */
+.gov-container img {
+  cursor: zoom-in;
+}
+
+.gov-image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  cursor: zoom-out;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.gov-image-modal.show {
+  opacity: 1;
+}
+
+.gov-image-modal .gov-image-modal-content {
+  max-width: 94%;
+  max-height: 94%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+}
+
+.gov-image-modal img {
+  max-width: 90vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  cursor: default;
+  background: #ffffff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== 代码块：简洁灰底等宽，不做彩色高亮（公文不花哨） ===== */
+.gov-container pre {
+  background: var(--gov-color-code-bg);
+  border: 1px solid var(--gov-color-border-light);
+  border-radius: 3px;
+  padding: 12px 16px;
+  overflow-x: auto;
+  font-size: 0.9em;
+  line-height: 1.6;
+  margin: 1em 0;
+}
+
+.gov-container code {
+  font-family: var(--gov-font-mono);
+  background: var(--gov-color-code-bg);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 0.92em;
+}
+
+.gov-container pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: 1em;
+}
+
+/* ===== 代码高亮主题（GitHub 风格浅色，黑白灰为主，公文不花哨） ===== */
+.hljs {
+  color: #24292e;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-doctag,
+.hljs-name {
+  color: #d73a49;
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-addition {
+  color: #032f62;
+}
+.hljs-title,
+.hljs-section,
+.hljs-title.class_,
+.hljs-title.function_ {
+  color: #6f42c1;
+}
+.hljs-number,
+.hljs-literal,
+.hljs-symbol,
+.hljs-bullet {
+  color: #005cc5;
+}
+.hljs-comment,
+.hljs-quote {
+  color: #6a737d;
+  font-style: italic;
+}
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attr,
+.hljs-attribute {
+  color: #e36209;
+}
+.hljs-built_in,
+.hljs-type {
+  color: #005cc5;
+}
+.hljs-meta {
+  color: #6a737d;
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 700;
+}
+
+/* ===== 引用：左侧深灰线 + 浅灰底 ===== */
+.gov-container blockquote {
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  background: var(--gov-color-quote-bg);
+  border-left: 3px solid var(--gov-color-border);
+  color: var(--gov-color-secondary);
+}
+
+/* ===== 链接：严谨下划线，不花哨 ===== */
+.gov-container a {
+  color: var(--gov-color-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ===== 图片 ===== */
+.gov-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== 水平线 ===== */
+.gov-container hr {
+  border: none;
+  border-top: 1px solid var(--gov-color-border);
+  margin: 1.5em 0;
+}
+
+/* ===== 目录：简洁容器 + 缩进层级 ===== */
+.gov-toc {
+  border: 1px solid var(--gov-color-border-light);
+  background: #fafafa;
+  padding: 1em 1.5em;
+  margin: 1em 0 2em;
+}
+
+.gov-toc-title {
+  font-family: var(--gov-font-heading);
+  font-weight: 700;
+  font-size: 1.1em;
+  color: var(--gov-color-heading);
+  text-align: center;
+  letter-spacing: 0.5em;
+  margin-bottom: 0.8em;
+}
+
+.gov-toc .gov-toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gov-toc .gov-toc-list ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 1.5em;
+}
+
+.gov-toc li {
+  margin: 0.2em 0;
+}
+
+.gov-toc a {
+  color: var(--gov-color-text);
+  text-decoration: none;
+}
+
+.gov-toc a:hover {
+  color: var(--gov-color-link);
+  text-decoration: underline;
+}
+
+/* ===== 公式（KaTeX 渲染后补充） ===== */
+.gov-container .math-formula {
+  font-family: 'Times New Roman', 'KaTeX_Main', serif;
+}
+
+.gov-container .math-block {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+  padding: 0.5em;
+  overflow-x: auto;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+/* ===== 打印支持（政府文档经常转 PDF） ===== */
+@media print {
+  body {
+    font-size: 12pt;
+  }
+  .gov-container {
+    max-width: none;
+    padding: 0;
+  }
+  .gov-container a {
+    color: #000;
+  }
+}
+
+/* ===== 移动端 ===== */
+@media (max-width: 768px) {
+  .gov-container {
+    padding: 24px 16px 48px;
+  }
+}
+
+:root {
+  --gov-font-body: 微软雅黑, Noto Serif CJK SC, Source Han Serif SC, Source Han Serif CN, 仿宋, FangSong, 仿宋_GB2312, FangSong_GB2312, 宋体, SimSun, STSong, Times New Roman, serif;
+  --gov-font-heading: 微软雅黑, Noto Sans CJK SC, Source Han Sans SC, Source Han Sans CN, 黑体, SimHei, PingFang SC, Microsoft YaHei, sans-serif;
+  --gov-font-mono: Courier New, SF Mono, Cascadia Code, Consolas, Courier New, monospace;
+  --gov-font-size: 16px;
+  --gov-line-height: 1.5;
+  --gov-text-indent: 2em;
+  --gov-heading1-size: 24px;
+  --gov-heading2-size: 21.33px;
+  --gov-heading3-size: 18.67px;
+  --gov-heading4-size: 16px;
+  --gov-heading5-size: 16px;
+  --gov-heading6-size: 16px;
+  --gov-color-text: #000000;
+  --gov-color-heading: #000000;
+  --gov-color-link: #0563C1;
+  --gov-color-border: #000000;
+  --gov-color-table-header-bg: #DDDDDD;
+  --gov-color-table-header-text: #000000;
+}</style>
+</head>
+<body>
+  <div class="gov-container">
+    <ul>
+<li><a href="#rust%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80">RUST语法基础</a><ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E4%B8%AA-console-%E7%A8%8B%E5%BA%8Fhello-world">第一个 console 程序：hello world</a><ul>
+<li><a href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B">代码示例</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E7%82%B9%E8%A7%A3%E9%87%8A">关键点解释</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%98%E9%87%8F%E5%AE%9A%E4%B9%89">变量定义</a><ul>
+<li><a href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-1">代码示例</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E7%82%B9%E8%A7%A3%E9%87%8A-1">关键点解释</a></li>
+</ul>
+</li>
+<li><a href="#%E6%93%8D%E4%BD%9C%E7%AC%A6">操作符</a><ul>
+<li><a href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-2">代码示例</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E7%82%B9%E8%A7%A3%E9%87%8A-2">关键点解释</a></li>
+</ul>
+</li>
+<li><a href="#%E5%88%A4%E6%96%AD%E8%AF%AD%E5%8F%A5">判断语句</a><ul>
+<li><a href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-3">代码示例</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E7%82%B9%E8%A7%A3%E9%87%8A-3">关键点解释</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5">循环语句</a><ul>
+<li><a href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-4">代码示例</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E7%82%B9%E8%A7%A3%E9%87%8A-4">关键点解释</a></li>
+</ul>
+</li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">数据类型</a><ul>
+<li><a href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-5">代码示例</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E7%82%B9%E8%A7%A3%E9%87%8A-5">关键点解释</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2">字符和字符串</a><ul>
+<li><a href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-6">代码示例</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E7%82%B9%E8%A7%A3%E9%87%8A-6">关键点解释</a></li>
+</ul>
+</li>
+<li><a href="#%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6">特殊字符</a><ul>
+<li><a href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-7">代码示例</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E7%82%B9%E8%A7%A3%E9%87%8A-7">关键点解释</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1>RUST语法基础</h1>
+<h2>第一个 console 程序：hello world</h2>
+<h3>代码示例</h3>
+<pre><code class="language-bash">cargo new hello_world
+cd hello_world
+</code></pre>
+<pre><code class="language-rust">// src/main.rs
+fn main() {
+    println!(&quot;Hello, world!&quot;);
+}
+</code></pre>
+<pre><code class="language-bash">cargo run      # 编译并运行 -&gt; Hello, world!
+cargo build    # 只编译 -&gt; target/debug/hello_world(.exe)
+cargo check    # 只做检查，最快，日常首选
+</code></pre>
+<h3>关键点解释</h3>
+<ul>
+<li><code>fn main()</code> 是程序入口，无参数、无返回值。</li>
+<li><code>println!</code> 带 <code>!</code>，是<strong>宏</strong>不是函数；宏在编译期展开，能接受可变参数并做格式检查。</li>
+<li>语句以 <code>;</code> 结尾；块 <code>{ }</code> 里最后一个不带 <code>;</code> 的表达式会作为返回值。</li>
+<li><code>cargo new</code> 会生成 <code>Cargo.toml</code> + <code>src/main.rs</code> + <code>.gitignore</code>（已忽略 <code>/target</code>）。</li>
+<li>debug 与 release 分开：<code>--release</code> 产物在 <code>target/release/</code>。</li>
+</ul>
+<hr>
+<h2>变量定义</h2>
+<h3>代码示例</h3>
+<pre><code class="language-rust">let x = 5;                  // 不可变
+// x = 6;                   // 编译错误
+
+let mut y = 5;              // mut 才能改
+y = 6;
+
+let z: i32 = 10;            // 显式类型标注
+const MAX: u32 = 100;       // 常量：必须标类型，命名全大写
+
+// 遮蔽 shadowing：重新绑定，可换类型、换可变性
+let a = 1;
+let a = a + 1;
+let a = &quot;abc&quot;;              // 合法，a 变成 &amp;str
+
+let (p, q) = (1, &quot;x&quot;);      // 元组解构
+let _unused = 1;            // _ 前缀消除未使用警告
+
+// 必须先初始化
+// let n: i32;
+// println!(&quot;{}&quot;, n);       // 编译错误
+</code></pre>
+<h3>关键点解释</h3>
+<ul>
+<li><strong>默认不可变</strong>，写 <code>mut</code> 才可变 —— 这是 Rust 的核心设计，不是限制而是约束。</li>
+<li><code>const</code> 是编译期常量：必须标注类型、值必须是常量表达式、可全局声明。</li>
+<li><strong>遮蔽（shadowing）与 <code>mut</code> 的区别</strong>：遮蔽用 <code>let</code> 重新绑定，可以改变类型；<code>mut</code> 改变值但类型固定。</li>
+<li>变量使用前必须初始化，编译器会做<strong>未初始化检查</strong>（这点比 C/C++ 安全）。</li>
+<li>未使用变量只是警告不是错误，加 <code>_</code> 前缀可消除。</li>
+</ul>
+<hr>
+<h2>操作符</h2>
+<h3>代码示例</h3>
+<pre><code class="language-rust">let (a, b) = (7, 3);
+
+// 算术
+println!(&quot;{} {} {} {} {}&quot;, a + b, a - b, a * b, a / b, a % b);  // 10 4 21 2 1
+
+// 比较
+println!(&quot;{} {}&quot;, a &gt; b, a == b);                               // true false
+
+// 逻辑
+println!(&quot;{} {} {}&quot;, true &amp;&amp; false, true || false, !true);      // false true false
+
+// 位运算
+println!(&quot;{} {} {} {}&quot;, a &amp; b, a | b, a ^ b, a &lt;&lt; 1);           // 3 7 4 14
+
+// 复合赋值（不存在 ++ / --）
+let mut c = 1;
+c += 2;
+
+// 范围
+for i in 0..3 {}      // 0,1,2
+for i in 0..=3 {}     // 0,1,2,3
+
+// 没有隐式数值转换，必须 as
+let f = a as f64;     // 7.0
+// let g = a + 1.0;   // 编译错误：i32 + f64
+
+// 引用与解引用
+let r = &amp;c;
+let v = *r;
+</code></pre>
+<h3>关键点解释</h3>
+<ul>
+<li><strong>没有 <code>++</code> / <code>--</code></strong>，用 <code>+= 1</code>。</li>
+<li>整数除法向零截断（<code>7 / 3 == 2</code>），取余符号跟被除数。</li>
+<li><strong>不做隐式数值转换</strong>：<code>i32 + f64</code> 是编译错误，必须 <code>as</code> 显式转换。</li>
+<li><code>&amp;&amp;</code> <code>||</code> 是短路求值。</li>
+<li>整数溢出：debug 模式 <strong>panic</strong>，release 模式<strong>环绕</strong>（wrap）。需要显式环绕用 <code>wrapping_*</code>。</li>
+<li><code>..</code> 不含上界，<code>..=</code> 含上界。</li>
+</ul>
+<hr>
+<h2>判断语句</h2>
+<h3>代码示例</h3>
+<pre><code class="language-rust">let n = 5;
+
+if n &gt; 0 {
+    println!(&quot;positive&quot;);
+} else if n &lt; 0 {
+    println!(&quot;negative&quot;);
+} else {
+    println!(&quot;zero&quot;);
+}
+
+// if 是表达式，可以返回值
+let label = if n % 2 == 0 { &quot;even&quot; } else { &quot;odd&quot; };
+
+// 条件必须是 bool
+// if n { }              // 编译错误：expected bool, found integer
+
+// match：多分支匹配，必须穷尽
+match n {
+    0 =&gt; println!(&quot;zero&quot;),
+    1 | 2 =&gt; println!(&quot;one or two&quot;),     // | 表示或
+    3..=9 =&gt; println!(&quot;3 to 9&quot;),         // 范围
+    _ =&gt; println!(&quot;other&quot;),              // 兜底
+}
+
+// match 也是表达式
+let s = match n { 0 =&gt; &quot;zero&quot;, _ =&gt; &quot;nonzero&quot; };
+
+// 带条件的 match 分支
+match n {
+    x if x &lt; 0 =&gt; println!(&quot;neg&quot;),
+    _ =&gt; println!(&quot;non-neg&quot;),
+}
+
+// if let：只关心一种模式
+let opt: Option&lt;i32&gt; = Some(3);
+if let Some(v) = opt { println!(&quot;{}&quot;, v); }
+
+// let-else：不匹配就提前返回
+let Some(v) = opt else { return; };
+</code></pre>
+<h3>关键点解释</h3>
+<ul>
+<li><strong>if 的条件必须是 <code>bool</code></strong>，没有 truthy/falsy，不能写 <code>if n</code>。</li>
+<li><code>if</code> / <code>match</code> 都是<strong>表达式</strong>，可以直接赋值给变量，但<strong>所有分支返回值类型必须一致</strong>。</li>
+<li><code>match</code> 比 <code>if-else</code> 链更受推荐，因为编译器强制<strong>穷尽性检查</strong>。</li>
+<li><code>_</code> 是通配模式，放最后兜底。</li>
+<li><code>if let</code> 用于只关心一种模式、其余忽略的场景，比 <code>match</code> 简洁。</li>
+</ul>
+<hr>
+<h2>循环语句</h2>
+<h3>代码示例</h3>
+<pre><code class="language-rust">// loop：无限循环，可用 break 返回值
+let mut i = 0;
+let r = loop {
+    i += 1;
+    if i == 3 { break i * 2; }   // r == 6
+};
+
+// while
+while i &lt; 5 {
+    i += 1;
+}
+
+// for：最常用，遍历迭代器
+for x in 0..5 { println!(&quot;{}&quot;, x); }
+for x in [1, 2, 3] { }                    // 数组（按值）
+for x in &amp;[1, 2, 3] { }                   // 数组（按引用）
+for (idx, val) in [10, 20].iter().enumerate() { }
+for i in (0..10).rev() { }                // 倒序
+
+// 控制
+for x in 0..10 {
+    if x == 1 { continue; }
+    if x == 5 { break; }
+}
+
+// 标签：跳出外层循环
+&#39;outer: for x in 0..3 {
+    for y in 0..3 {
+        if x + y == 3 { break &#39;outer; }
+    }
+}
+
+// while let
+let mut st = Some(1);
+while let Some(v) = st { st = None; }
+</code></pre>
+<h3>关键点解释</h3>
+<ul>
+<li>三种循环：<code>loop</code>（无限）、<code>while</code>（条件）、<code>for</code>（迭代）。</li>
+<li><code>loop</code> 可用 <code>break value;</code> 返回值，<strong>只有 <code>loop</code> 能带值 break</strong>，<code>while</code> / <code>for</code> 不行。</li>
+<li><code>for</code> 遍历的是实现了 <code>IntoIterator</code> 的东西；<code>0..5</code> 是 <code>Range</code>。</li>
+<li>遍历数组：<code>iter()</code> 借用不移动、<code>into_iter()</code> 消耗、<code>iter_mut()</code> 可变借用。</li>
+<li>标签语法 <code>&#39;name:</code>，配合 <code>break &#39;name</code> / <code>continue &#39;name</code> 跳多层。</li>
+<li>无限循环用 <code>loop</code> 而非 <code>while true</code>（编译器更清楚意图）。</li>
+</ul>
+<hr>
+<h2>数据类型</h2>
+<h3>代码示例</h3>
+<pre><code class="language-rust">// 整数（默认 i32）
+let a: i8 = -1;          // i8 i16 i32 i64 i128 isize
+let b: u8 = 1;           // u8 u16 u32 u64 u128 usize
+let c = 1_000_000;       // 下划线分隔，可读性好
+let d = 0xff;            // 十六进制 = 255
+let e: u8 = b&#39;A&#39;;        // 字节字面量
+
+// 浮点（默认 f64）
+let f: f32 = 1.0;
+let g = 2.0;
+
+// 布尔、字符
+let h = true;
+let i = &#39;A&#39;;             // char，4 字节
+
+// 元组：可放不同类型，长度固定
+let t: (i32, f64, char) = (1, 2.0, &#39;x&#39;);
+let (x, y, z) = t;       // 解构
+println!(&quot;{}&quot;, t.0);     // 索引访问
+let unit = ();           // 单元类型，类似 void
+
+// 数组：固定长度，栈上
+let arr: [i32; 3] = [1, 2, 3];
+let zeros = [0; 5];      // [0,0,0,0,0]
+println!(&quot;{}&quot;, arr[0]);
+
+// 切片：数组的视图
+let sl = &amp;arr[0..2];
+
+// Vec：堆上，可变长
+let mut v: Vec&lt;i32&gt; = Vec::new();
+v.push(1);
+let v2 = vec![1, 2, 3];
+
+// 字符串
+let s1 = String::from(&quot;hello&quot;);   // 堆上，可增长
+let s2: &amp;str = &quot;hello&quot;;           // 切片，不可变
+
+// 可选值（Rust 没有 null）
+let n: Option&lt;i32&gt; = None;
+</code></pre>
+<h3>关键点解释</h3>
+<ul>
+<li>整数默认 <code>i32</code>，浮点默认 <code>f64</code>；<code>usize</code> / <code>isize</code> 随平台字长，用作集合索引。</li>
+<li>数组 <code>[T; N]</code> 长度编译期固定；<code>Vec&lt;T&gt;</code> 堆分配可变长。<strong>数组越界会 panic</strong>（Rust 做边界检查）。</li>
+<li>元组各元素类型可不同，用 <code>.0</code> <code>.1</code> 访问；空元组 <code>()</code> 是单元类型，无返回值的函数默认返回它。</li>
+<li><strong>Rust 没有 null</strong>，用 <code>Option&lt;T&gt;</code>（<code>Some(v)</code> / <code>None</code>），强制你处理空值。</li>
+<li>数字字面量可用 <code>_</code> 分隔提高可读性（<code>1_000_000</code>）。</li>
+</ul>
+<hr>
+<h2>字符和字符串</h2>
+<h3>代码示例</h3>
+<pre><code class="language-rust">// char：单引号，4 字节，一个 Unicode 标量值
+let c1 = &#39;A&#39;;
+let c2 = &#39;中&#39;;
+let c3 = &#39;😀&#39;;
+println!(&quot;{}&quot;, &#39;😀&#39;.len_utf8());    // 4
+
+// &amp;str：字符串切片，不可变
+let s1: &amp;str = &quot;hello&quot;;
+
+// String：堆上可变
+let mut s2 = String::from(&quot;hello&quot;);
+s2.push_str(&quot;, world&quot;);
+s2.push(&#39;!&#39;);
+
+// 转换
+let s3: String = s1.to_string();
+let s4: &amp;str = &amp;s2;                  // 借用，Deref 强转
+
+// 拼接
+let s5 = String::from(&quot;a&quot;) + &amp;s2;    // + 右侧须 &amp;str，且会移动左侧
+let s6 = format!(&quot;{}-{}&quot;, s1, s2);   // 推荐：不转移所有权
+
+// 遍历（不能用下标取字符！）
+for ch in &quot; hi中&quot;.chars() { }        // 按字符
+for b in &quot;hi&quot;.bytes() { }            // 按字节
+
+// 长度
+println!(&quot;{}&quot;, &quot;中&quot;.len());           // 3（UTF-8 字节数）
+println!(&quot;{}&quot;, &quot;中&quot;.chars().count()); // 1（字符数）
+</code></pre>
+<h3>关键点解释</h3>
+<ul>
+<li><code>char</code> 用<strong>单引号</strong>且固定 4 字节，能放任意 Unicode；字符串用<strong>双引号</strong>。</li>
+<li><code>&amp;str</code> 是不可变借用（字面量是 <code>&amp;&#39;static str</code>，存在二进制里）；<code>String</code> 拥有堆上数据、可增长。</li>
+<li><strong>不能用索引访问字符</strong>：<code>&quot;中&quot;[0]</code> 编译错误。因为 UTF-8 变长，下标取到的是字节边界不确定的位置。</li>
+<li><code>len()</code> 返回<strong>字节数</strong>，字符数要 <code>chars().count()</code>。</li>
+<li>拼接优先 <code>format!</code>：<code>+</code> 会 move 左侧变量，之后就不能再用了。</li>
+<li>函数参数优先用 <code>&amp;str</code>（<code>String</code> 会自动解引用强转，两种都能传）。</li>
+</ul>
+<hr>
+<h2>特殊字符</h2>
+<h3>代码示例</h3>
+<pre><code class="language-rust">// 常用转义
+let nl = &quot;\n&quot;;        // 换行
+let tb = &quot;\t&quot;;        // 制表符
+let cr = &quot;\r&quot;;        // 回车
+let bs = &quot;\\&quot;;        // 反斜杠
+let q  = &quot;\&quot;&quot;;        // 双引号
+let sq = &#39;\&#39;&#39;;        // 单引号（char 中必须转义）
+let z  = &quot;\0&quot;;        // 空字符
+
+// Unicode 转义
+let u1 = &quot;\u{4E2D}&quot;;  // 中
+let e1 = &quot;\u{1F600}&quot;; // 😀
+
+// 原始字符串：不做任何转义
+let raw  = r&quot;C:\Users\name&quot;;       // 反斜杠原样保留
+let raw2 = r#&quot;He said &quot;hi&quot;&quot;#;     // 内容含 &quot; 用 r#&quot;&quot;#
+let raw3 = r##&quot;a &quot;#&quot; b&quot;##;        // 含 &quot;# 再加一层 #
+
+// 字节串
+let b: &amp;[u8; 2] = b&quot;hi&quot;;          // 字节串字面量
+let braw = br&quot;raw\nbytes&quot;;        // 原始字节串
+
+// 续行：行尾 \ 会去掉换行和前导空白
+let long = &quot;abc\
+    def&quot;;                          // -&gt; &quot;abcdef&quot;
+</code></pre>
+<h3>关键点解释</h3>
+<ul>
+<li>常用转义：<code>\n</code> <code>\t</code> <code>\\</code> <code>\&quot;</code> <code>\&#39;</code> <code>\0</code>。</li>
+<li><code>r&quot;...&quot;</code> <strong>原始字符串不做转义</strong>，写 Windows 路径、正则时特别省事。</li>
+<li>内容里有 <code>&quot;</code> 就用 <code>r#&quot;&quot;#</code>；万一含 <code>&quot;#</code>，再加 <code>#</code>（<code>r##&quot;...&quot;##</code>），几层由内容决定。</li>
+<li><code>\u{XXXX}</code> 写任意 Unicode 码点，也可直接写字符本身。</li>
+<li><code>b&quot;...&quot;</code> 得到 <code>&amp;[u8; N]</code> 字节串，char 里只能放 ASCII。</li>
+<li>字符串里换行会保留；行尾加 <code>\</code> 可续行并吞掉缩进。</li>
+</ul>
+
+  </div>
+  <script>
+(function () {
+  'use strict';
+
+  // ===== 1. 表格字号动态计算（与 gov 模板同一逻辑） =====
+  var MIN_FONT = 10.5;
+  var tables = document.querySelectorAll('.gov-container table');
+  for (var t = 0; t < tables.length; t++) {
+    var table = tables[t];
+    var cells = Array.prototype.slice.call(table.querySelectorAll('th, td'));
+    if (cells.length === 0) continue;
+
+    var current = parseFloat(window.getComputedStyle(table).fontSize) || 16;
+    if (current <= MIN_FONT) continue;
+    var avail = table.clientWidth;
+    if (avail <= 0) continue;
+
+    var originals = cells.map(function (c) { return c.style.whiteSpace; });
+    cells.forEach(function (c) { c.style.whiteSpace = 'nowrap'; });
+    var needWidth = table.scrollWidth;
+    cells.forEach(function (c, i) { c.style.whiteSpace = originals[i]; });
+
+    if (needWidth <= avail + 1) continue;
+    var target = current * (avail / needWidth) * 0.97;
+    target = Math.max(MIN_FONT, target);
+    table.style.fontSize = target + 'px';
+  }
+
+  // ===== 2. Mermaid 渲染（若有内嵌 mermaid.min.js 且存在未转图的 mermaid 代码块） =====
+  if (typeof window.mermaid !== 'undefined') {
+    var blocks = document.querySelectorAll('.gov-container pre code.language-mermaid');
+    if (blocks.length) {
+      try {
+        window.mermaid.initialize({
+          startOnLoad: false,
+          theme: 'default',
+          securityLevel: 'loose',
+          fontFamily: 'PingFang SC, Microsoft YaHei UI, Noto Serif CJK SC, SimSun, sans-serif',
+          fontSize: 14,
+          flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' },
+          sequence: { useMaxWidth: true, wrap: true },
+          gantt: { useMaxWidth: true },
+          journey: { useMaxWidth: true },
+          gitGraph: { useMaxWidth: true }
+        });
+      } catch (e) { /* 忽略 */ }
+
+      for (var i = 0; i < blocks.length; i++) {
+        (function (el, idx) {
+          var code = (el.textContent || '').trim();
+          var pre = el.closest('pre');
+          if (!code || !pre) return;
+          var chartId = 'gov-mermaid-' + Date.now() + '-' + idx;
+          window.mermaid.render(chartId, code).then(function (res) {
+            var wrapper = document.createElement('div');
+            wrapper.className = 'gov-mermaid';
+            wrapper.innerHTML = res.svg;
+            pre.parentNode.replaceChild(wrapper, pre);
+          }).catch(function (err) {
+            var errBox = document.createElement('div');
+            errBox.className = 'gov-mermaid-error';
+            errBox.textContent = 'Mermaid 渲染失败: ' + ((err && err.message) || err || '未知错误');
+            pre.parentNode.insertBefore(errBox, pre);
+          });
+        })(blocks[i], i);
+      }
+    }
+  }
+
+  // ===== 3. 图片点击放大（与 gov 模板 / Readmdvue 一致：双击图片 → 全屏模态框） =====
+  var modal = null;
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove('show');
+    setTimeout(function () { if (modal && modal.parentNode) modal.parentNode.removeChild(modal); modal = null; }, 250);
+  }
+  function openModal(img) {
+    if (modal) { closeModal(); return; }
+    modal = document.createElement('div');
+    modal.className = 'gov-image-modal';
+    var content = document.createElement('div');
+    content.className = 'gov-image-modal-content';
+    var cloned = img.cloneNode(true);
+    cloned.removeAttribute('style');
+    content.appendChild(cloned);
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+    setTimeout(function () { modal.classList.add('show'); }, 10);
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeModal();
+    });
+    var escHandler = function (e) {
+      if (e.key === 'Escape') { closeModal(); document.removeEventListener('keydown', escHandler); }
+    };
+    document.addEventListener('keydown', escHandler);
+  }
+  document.addEventListener('dblclick', function (e) {
+    var target = e.target;
+    if (target && target.tagName === 'IMG' && target.closest('.gov-container')) {
+      e.preventDefault();
+      openModal(target);
+    }
+  });
+})();
+</script>
+</body>
+</html>
