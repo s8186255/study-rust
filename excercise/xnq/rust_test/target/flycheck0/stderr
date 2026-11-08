@@ -1,4 +1,0 @@
-    Checking rust_test v0.1.0 (C:\Users\xiaonanqi\xnq\rust_test)
-error: could not compile `rust_test` (bin "rust_test") due to 2 previous errors
-warning: build failed, waiting for other jobs to finish...
-error: could not compile `rust_test` (bin "rust_test" test) due to 2 previous errors
