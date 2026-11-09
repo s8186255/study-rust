@@ -1,12 +1,14 @@
 [package]
-name = "lab3-typed-stream"
+name = "lab5-websearch"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 rig.workspace = true
 tokio.workspace = true
+futures.workspace = true
 anyhow.workspace = true
 serde.workspace = true
-schemars.workspace = true
-futures.workspace = true
+serde_json.workspace = true
+reqwest.workspace = true
+regex.workspace = true

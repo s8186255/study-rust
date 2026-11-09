@@ -1,0 +1,8 @@
+{
+  "base_url": "http://10.126.126.2:8089/v1",
+  "api_key": "",
+  "model": "gemma-4-26B-A4B",
+  "embedding_model": "jina-embeddings-v5-omni",
+  "temperature": 0.7,
+  "system": "仅依据提供的上下文回答；上下文里没有的信息，明确说不知道。"
+}

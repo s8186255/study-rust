@@ -1,0 +1,7 @@
+{
+  "base_url": "http://10.126.126.2:8089/v1",
+  "api_key": "",
+  "model": "gemma-4-26B-A4B",
+  "temperature": 0.7,
+  "system": "你是技能助手。完成任务前先用 list_skills 查看可用技能，选择合适的 skill 并用 run_skill 执行，依据脚本的真实输出回答；不要臆造结果。"
+}

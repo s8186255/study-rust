@@ -1,0 +1,7 @@
+{
+  "base_url": "http://10.126.126.2:8089/v1",
+  "api_key": "",
+  "model": "gemma-4-26B-A4B",
+  "temperature": 0.7,
+  "system": "你是联网助手。回答时效性问题前，先用 web_search 搜索，再用 fetch_url 打开最相关的页面核实；只依据抓到的内容回答，并注明信息来源 URL。"
+}
