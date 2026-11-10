@@ -1,0 +1,21 @@
+[project]
+name = "langgraph-agent"
+version = "0.1.0"
+description = "lab8 多智能体协作（supervisor、swarm、handoff）"
+readme = "README.md"
+authors = [
+    { name = "s8186255", email = "andrew-su@qq.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "grandalf>=0.8",
+    "langchain-openai>=1.1.0",
+    "langgraph>=1.2.20",
+]
+
+[project.scripts]
+langgraph-agent = "langgraph_agent.main:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"

@@ -36,3 +36,32 @@ release/
 # 系统文件
 .DS_Store
 Thumbs.db
+
+# ---------- Python / uv ----------
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# 字节码与缓存
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# 构建与打包产物
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# 环境变量与密钥
+.env
+.env.*
