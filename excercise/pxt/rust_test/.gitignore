@@ -1,0 +1,9 @@
+# Rust 编译产物，一定要忽略
+rust_test/target/
+
+# 编辑器临时文件
+*.swp
+*.swo
+.DS_Store
+.idea/
+.vscode/
