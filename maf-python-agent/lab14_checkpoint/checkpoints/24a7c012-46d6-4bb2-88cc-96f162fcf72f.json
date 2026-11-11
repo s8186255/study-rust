@@ -1,0 +1,29 @@
+{
+  "workflow_name": "WorkflowBuilder-6ca9b303-2347-4557-959e-35bedcf94cff",
+  "graph_signature_hash": "3846eab74fe248e617c78ec064871f9aa164d1407d88b26f010eb5d5e8103a54",
+  "checkpoint_id": "24a7c012-46d6-4bb2-88cc-96f162fcf72f",
+  "previous_checkpoint_id": "da6c307c-4c9e-4009-bbe6-812e2f82df19",
+  "timestamp": "2026-11-11T05:50:17.663961+00:00",
+  "messages": {
+    "Extract": [
+      {
+        "__pickled__": "gAWV/QAAAAAAAACMKmFnZW50X2ZyYW1ld29yay5fd29ya2Zsb3dzLl9ydW5uZXJfY29udGV4dJSMD1dvcmtmbG93TWVzc2FnZZSTlCmBlH2UKIwEZGF0YZSMGuaPkOWPluS/oeaBrzog5Y6f5aeL5pWw5o2ulIwJc291cmNlX2lklIwHRXh0cmFjdJSMCXRhcmdldF9pZJROjAR0eXBllGgAjAtNZXNzYWdlVHlwZZSTlIwIc3RhbmRhcmSUhZRSlIwOdHJhY2VfY29udGV4dHOUTowPc291cmNlX3NwYW5faWRzlE6MG29yaWdpbmFsX3JlcXVlc3RfaW5mb19ldmVudJROdWIu",
+        "__type__": "agent_framework._workflows._runner_context:WorkflowMessage"
+      }
+    ]
+  },
+  "state": {
+    "_workflow_run_kwargs": {},
+    "_resolved_workflow_run_kwargs": {},
+    "_routed_workflow_run_kwargs": {},
+    "_executor_state": {
+      "Extract": {},
+      "Validate": {},
+      "Summarize": {}
+    }
+  },
+  "pending_request_info_events": {},
+  "iteration_count": 1,
+  "metadata": {},
+  "version": "1.0"
+}

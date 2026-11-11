@@ -2,6 +2,7 @@
   - [第一个 console 程序：hello world](#第一个-console-程序hello-world)
     - [代码示例](#代码示例)
     - [关键点解释](#关键点解释)
+  - [使用rust script直接运行rs文件](#使用rust-script直接运行rs文件)
   - [变量定义](#变量定义)
     - [代码示例](#代码示例-1)
     - [关键点解释](#关键点解释-1)
@@ -57,6 +58,9 @@ cargo check    # 只做检查，最快，日常首选
 - debug 与 release 分开：`--release` 产物在 `target/release/`。
 
 ---
+## 使用rust script直接运行rs文件
+在初学rust的时候，可以使用更加轻量级的rust代码运行方式；
+
 
 ## 变量定义
 

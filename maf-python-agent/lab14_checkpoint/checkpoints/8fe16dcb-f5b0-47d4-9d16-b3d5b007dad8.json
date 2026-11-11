@@ -1,0 +1,22 @@
+{
+  "workflow_name": "WorkflowBuilder-73b98c53-d4d9-44f6-9607-18dc27de5d55",
+  "graph_signature_hash": "3846eab74fe248e617c78ec064871f9aa164d1407d88b26f010eb5d5e8103a54",
+  "checkpoint_id": "8fe16dcb-f5b0-47d4-9d16-b3d5b007dad8",
+  "previous_checkpoint_id": "07efef20-4a13-4f0f-96cf-f5cb96d86841",
+  "timestamp": "2026-11-11T05:49:14.670530+00:00",
+  "messages": {},
+  "state": {
+    "_workflow_run_kwargs": {},
+    "_resolved_workflow_run_kwargs": {},
+    "_routed_workflow_run_kwargs": {},
+    "_executor_state": {
+      "Extract": {},
+      "Validate": {},
+      "Summarize": {}
+    }
+  },
+  "pending_request_info_events": {},
+  "iteration_count": 3,
+  "metadata": {},
+  "version": "1.0"
+}

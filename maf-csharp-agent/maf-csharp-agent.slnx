@@ -1,0 +1,26 @@
+<Solution>
+  <Folder Name="/common/">
+    <Project Path="common/Maf.Common/Maf.Common.csproj" />
+  </Folder>
+  <Project Path="lab0-env/lab0-env.csproj" />
+  <Project Path="lab1-hello-agent/lab1-hello-agent.csproj" />
+  <Project Path="lab10-handoff/lab10-handoff.csproj" />
+  <Project Path="lab11-groupchat/lab11-groupchat.csproj" />
+  <Project Path="lab12-magnetic/lab12-magnetic.csproj" />
+  <Project Path="lab13-hitl/lab13-hitl.csproj" />
+  <Project Path="lab14-checkpoint/lab14-checkpoint.csproj" />
+  <Project Path="lab15-memory/lab15-memory.csproj" />
+  <Project Path="lab16-context-provider/lab16-context-provider.csproj" />
+  <Project Path="lab17-middleware-otel/lab17-middleware-otel.csproj" />
+  <Project Path="lab18-harness-agent/lab18-harness-agent.csproj" />
+  <Project Path="lab19-foundry/lab19-foundry.csproj" />
+  <Project Path="lab2-function-tools/lab2-function-tools.csproj" />
+  <Project Path="lab20-final/lab20-final.csproj" />
+  <Project Path="lab3-agent-session/lab3-agent-session.csproj" />
+  <Project Path="lab4-structured-output/lab4-structured-output.csproj" />
+  <Project Path="lab5-react/lab5-react.csproj" />
+  <Project Path="lab6-mcp/lab6-mcp.csproj" />
+  <Project Path="lab7-workflow-sequential/lab7-workflow-sequential.csproj" />
+  <Project Path="lab8-workflow-branch-parallel/lab8-workflow-branch-parallel.csproj" />
+  <Project Path="lab9-agent-as-tool/lab9-agent-as-tool.csproj" />
+</Solution>

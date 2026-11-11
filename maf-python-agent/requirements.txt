@@ -1,0 +1,12 @@
+# maf-python-agent 依赖（agent-framework 1.25.0，与 maf-csharp-agent 1.28.0 同代）
+agent-framework-core==1.25.0
+agent-framework-openai==1.25.0
+# 编排子包版本号独立发布（当前 1.4.x），不锁死
+agent-framework-orchestrations
+# lab6 MCP（MCPStdioTool 需要 mcp 运行时与其重试依赖）
+mcp>=1.0.0
+tenacity>=9.0.0
+python-dotenv>=1.0.0
+
+# lab19 可选：Foundry Agent Service（需 Entra ID 环境）
+# agent-framework-azure-ai
